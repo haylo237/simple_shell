@@ -10,17 +10,19 @@ void execute_command(char *command) {
         perror("fork");
         exit(EXIT_FAILURE);
     } else {
+        char *envp[] = {NULL}; // Move the declaration to the top
         switch (pid) {
             case 0: // Child process
                 {
-                    char *args[] = {command, NULL};
-                    char *envp[] = {NULL}; // Pass an empty environment
+                    char *args[2];
+                    args[0] = command;
+                    args[1] = NULL;
                     if (execve(command, args, envp) == -1) {
                         perror("execve");
                         exit(EXIT_FAILURE);
                     }
                 }
-		break;
+                break;
             default: // Parent process
                 {
                     int status;
@@ -32,7 +34,7 @@ void execute_command(char *command) {
                     }
                 }
                 break;
-	}
+        }
     }
 }
 

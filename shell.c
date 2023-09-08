@@ -3,7 +3,7 @@
  * Main - Entry point
  * Return: Always 0
  */
-int main()
+int main(void)
 {
 	char input[100];
 	for (;;)
