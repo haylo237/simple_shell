@@ -12,13 +12,17 @@
 #include <time.h>
 #include <stdbool.h>
 
-/* environment variables */
-extern char **environ;
-extern __sighandler_t signal(int __sig, __sighandler_t __handler);
+#define MAX_INPUT_LENGTH 100
+#define MAX_ARGS 10 // Maximum number of arguments
 
-/* handle built ins */
+
+
 void write_prompt(void);
 void write_error(const char *message);
 void execute_command(char *command);
+void execute_child(char *command, char *args[]);
+void execute_parent(char *command);
+void handle_command(char *command_path, char *args[]);
+
 
 #endif /* SHELL_H */
