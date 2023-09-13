@@ -13,7 +13,7 @@
 #include <stdbool.h>
 
 #define MAX_INPUT_LENGTH 100
-#define MAX_ARGS 10 // Maximum number of arguments
+#define MAX_ARGS 10
 
 
 
