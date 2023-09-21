@@ -6,51 +6,46 @@
  */
 char *_getenv(const char *name)
 {
-    char **environ_copy;
-    char *variable, *value, *path;
-    int compare;
-    unsigned int path_length, environ_length, length, i;
+	char **environ_copy;
+	char *variable, *value, *path;
+	int compare;
+	unsigned int path_length, environ_length, length, i;
 
-    environ_length = 0;
-    while (environ[environ_length] != NULL)
-        environ_length++;
+	environ_length = 0;
+	while (environ[environ_length] != NULL)
+		environ_length++;
+	environ_copy = NULL;
+	environ_copy = copy_env(environ_copy, environ_length);
+	length = _strlen((char *)name);
+	for (i = 0; environ_copy[i] != NULL; i++)
+	{
+		variable = environ_copy[i];
+		compare = _strncmp((char *)name, variable, length);
+		switch (compare)
+		{
+			case 1:
+				value = strtok(variable, "=");
+				value = strtok(NULL, "\n ");
+				if (value == NULL)
+				{
+					errors(4);
+					exit(EXIT_FAILURE);
+				}
+				path_length = _strlen(value);
+				path = malloc(sizeof(char) * path_length + 1);
+				if (path == NULL)
+				{
+					errors(3);
+					return (NULL);
+				}
+				path = _strcpy(path, value), free_dp(environ_copy, environ_length);
+				return (path);
+			default:
+			break;
+		}
+	}
 
-    environ_copy = NULL;
-    environ_copy = copy_env(environ_copy, environ_length);
-
-    length = _strlen((char *)name);
-
-    for (i = 0; environ_copy[i] != NULL; i++)
-    {
-        variable = environ_copy[i];
-        compare = _strncmp((char *)name, variable, length);
-
-        switch (compare)
-        {
-            case 1:
-                value = strtok(variable, "=");
-                value = strtok(NULL, "\n ");
-                if (value == NULL)
-                {
-                    errors(4);
-                    exit(EXIT_FAILURE);
-                }
-                path_length = _strlen(value);
-                path = malloc(sizeof(char) * path_length + 1);
-                if (path == NULL)
-                {
-                    errors(3);
-                    return (NULL);
-                }
-                path = _strcpy(path, value);
-                free_dp(environ_copy, environ_length);
-                return (path);
-            default:
-                break;
-        }
-    }
-
-    return (NULL);
+	return (NULL);
 }
 
 /**
@@ -61,34 +56,28 @@ char *_getenv(const char *name)
  */
 char **copy_env(char **environ_copy, unsigned int environ_length)
 {
-    char *variable;
-    unsigned int variable_length;
-    unsigned int i;
+	char *variable;
+	unsigned int variable_length;
+	unsigned int i;
 
-    environ_copy = malloc(sizeof(char **) * (environ_length));
+	environ_copy = malloc(sizeof(char **) * (environ_length));
+	if (environ_copy == NULL)
+	{
+		errors(3);
+		return (NULL);
+	}
+	for (i = 0; i < environ_length; i++)
+	{
+		variable = environ[i];
+		variable_length = _strlen(variable);
+		environ_copy[i] = malloc(sizeof(char) * variable_length + 1);
+		if (environ_copy[i] == NULL)
+		{
+			errors(3);
+			return (NULL);
+		}
 
-    if (environ_copy == NULL)
-    {
-        errors(3);
-        return (NULL);
-    }
-
-    for (i = 0; i < environ_length; i++)
-    {
-        variable = environ[i];
-        variable_length = _strlen(variable);
-
-        environ_copy[i] = malloc(sizeof(char) * variable_length + 1);
-
-        if (environ_copy[i] == NULL)
-        {
-            errors(3);
-            return (NULL);
-        }
-
-        _strcpy(environ_copy[i], environ[i]);
-    }
-
-    return (environ_copy);
+		_strcpy(environ_copy[i], environ[i]);
+	}
+	return (environ_copy);
 }
-

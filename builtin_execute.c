@@ -6,34 +6,34 @@
  */
 int builtin_execute(char **tokens)
 {
-    int status;
-    unsigned int length;
-    unsigned int num;
-    unsigned int i = 0;
+	int status;
+	unsigned int length;
+	unsigned int num;
+	unsigned int i = 0;
 
-    built_s builtin[] = {
-        {"exit", shell_exit},
-        {"env", shell_env},
-        {NULL, NULL}
-    };
+	built_s builtin[] = {
+		{"exit", shell_exit},
+		{"env", shell_env},
+		{NULL, NULL}
+	};
 
-    if (tokens[0] == NULL)
-        return (1);
+	if (tokens[0] == NULL)
+		return (1);
 
-    length = _strlen(tokens[0]);
+	length = _strlen(tokens[0]);
 
-    num = shell_num_builtins(builtin);
+	num = shell_num_builtins(builtin);
 
-    while (i < num)
-    {
-        if (_strcmp(tokens[0], builtin[i].name, length) == 0)
-        {
-            status = (builtin[i].p)();
-            return (status);
-        }
-        i++;
-    }
-    return (1);
+	while (i < num)
+	{
+		if (_strcmp(tokens[0], builtin[i].name, length) == 0)
+		{
+			status = (builtin[i].p)();
+		return (status);
+		}
+		i++;
+	}
+	return (1);
 }
 
 /**
@@ -43,11 +43,10 @@ int builtin_execute(char **tokens)
  */
 int shell_num_builtins(built_s builtin[])
 {
-    unsigned int i = 0;
+	unsigned int i = 0;
 
-    while (builtin[i].name != NULL)
-        i++;
+	while (builtin[i].name != NULL)
+		i++;
 
-    return (i);
+	return (i);
 }
-
